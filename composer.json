@@ -12,7 +12,10 @@
     "autoload": {
         "psr-4": {
             "MohmdAzizi\\VandarApi\\": "src/"
-        }
+        },
+        "files": [
+            "./src/helper/helper.php"
+        ]
     },
     "extra": {
         "laravel": {

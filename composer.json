@@ -1,0 +1,24 @@
+{
+    "name": "mohmdazizi/vandarapi",
+    "description": "A package for easy use of Vander apis",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "mohammad azizi",
+            "email": "aziziarmin000@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "MohmdAzizi\\VandarApi\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MohmdAzizi\\VandarApi\\VandarServiceProvider"
+            ]
+        }
+    }
+}

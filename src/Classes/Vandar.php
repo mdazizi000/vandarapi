@@ -110,14 +110,24 @@ class Vandar
      * @return array|mixed
      * @throws VandarException
      */
-    public function groupClearing($data,$batch_id)
+    public function groupClearing($data, $batch_id)
     {
         $list = [
-            "batch_id"=>$batch_id,
-	        "batches_settlement"=>$data
+            "batch_id" => $batch_id,
+            "batches_settlement" => $data
         ];
         $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batches-settlement", $list);
 
+        return $response->json();
+    }
+
+    /**
+     * @param $batchId
+     * @return array|mixed
+     */
+    public function groupClearingDetails($batchId)
+    {
+        $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batch-settlements/" . $batchId . "?per_page=20&page=1&status=SUBMITTED");
         return $response->json();
     }
 

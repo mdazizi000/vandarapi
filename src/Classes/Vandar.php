@@ -7,6 +7,7 @@ namespace App\Classes\Vandar;
 use App\Exceptions\VandarException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -49,7 +50,7 @@ class Vandar
             'refresh_token' => $refreshToken,
         ];
         $response = $this->post("https://api.vandar.io/v3/refreshtoken", $data);
-        Cache::put('vandar_access_token', $response['vandar_access_token'],now()->addDay(5));
+        Cache::put('vandar_access_token', $response['vandar_access_token'], now()->addDay(5));
         Cache::put('vandar_refresh_token', $response['refresh_token']);
         return $response['access_token'];
     }
@@ -105,12 +106,17 @@ class Vandar
 
     /**
      * @param array $data
+     * @param string $batch_id
      * @return array|mixed
      * @throws VandarException
      */
-    public function groupClearing($data)
+    public function groupClearing($data,$batch_id)
     {
-        $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batches-settlement", $data);
+        $list = [
+            "batch_id"=>$batch_id,
+	        "batches_settlement"=>$data
+        ];
+        $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batches-settlement", $list);
 
         return $response->json();
     }

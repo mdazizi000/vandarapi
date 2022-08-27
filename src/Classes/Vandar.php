@@ -6,6 +6,7 @@ namespace App\Classes\Vandar;
 
 use App\Exceptions\VandarException;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -26,6 +27,31 @@ class Vandar
     public static function use(): Vandar
     {
         return new static();
+    }
+
+    private function token()
+    {
+        $token = Cache::get('vandar_access_token');
+        if ($token) {
+            return $token;
+        } else {
+            $refresh_token = Cache::get('vandar_refresh_token');
+            return $this->refreshToken($refresh_token);
+        }
+    }
+
+    /**
+     * @throws VandarException
+     */
+    public function refreshToken($refreshToken)
+    {
+        $data = [
+            'refresh_token' => $refreshToken,
+        ];
+        $response = $this->post("https://api.vandar.io/v3/refreshtoken", $data);
+        Cache::put('vandar_access_token', $response['vandar_access_token'],now()->addDay(5));
+        Cache::put('vandar_refresh_token', $response['refresh_token']);
+        return $response['access_token'];
     }
 
     /**
@@ -76,12 +102,26 @@ class Vandar
         return $response->json();
     }
 
+
+    /**
+     * @param array $data
+     * @return array|mixed
+     * @throws VandarException
+     */
+    public function groupClearing($data)
+    {
+        $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batches-settlement", $data);
+
+        return $response->json();
+    }
+
+
     /**
      * @throws VandarException
      */
     protected function post(string $url, $data = null): Response
     {
-        $response = Http::post($url, $data);
+        $response = Http::withToken($this->token())->post($url, $data);
         $this->handle($response);
         return $response->json();
     }

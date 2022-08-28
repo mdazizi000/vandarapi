@@ -123,11 +123,14 @@ class Vandar
 
     /**
      * @param $batchId
+     * @param int $per_page
+     * @param int $page
+     * @param null $status
      * @return array|mixed
      */
-    public function groupClearingDetails($batchId)
+    public function groupClearingDetails($batchId,$per_page=10,$page=1,$status=null)
     {
-        $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batch-settlements/" . $batchId . "?per_page=20&page=1&status=SUBMITTED");
+        $response = $this->post("https://batch.vandar.io/api/v1/business/" . $this->business . "/batch-settlements/" . $batchId . "?per_page=".$per_page."&page=".$page."&status=".$status);
         return $response->json();
     }
 

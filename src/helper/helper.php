@@ -1,4 +1,7 @@
 <?php
+
+use MohmdAzizi\VandarApi\Classes\Vandar;
+
 function vandar(){
-    return \App\Classes\Vandar\Vandar::use();
+    return Vandar::use();
 }

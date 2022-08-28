@@ -1,15 +1,16 @@
 <?php
 
 
-namespace App\Classes\Vandar;
+namespace MohmdAzizi\VandarApi\Classes;
 
 
-use App\Exceptions\VandarException;
+
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
+use MohmdAzizi\VandarApi\HandleVandarException;
 
 class Vandar
 {

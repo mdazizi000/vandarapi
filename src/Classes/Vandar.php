@@ -20,10 +20,10 @@ class Vandar
 
     public function __construct()
     {
-        $this->base_url = config('services.vandar.base_url');
-        $this->api_key = config('services.vandar.api_key');
-        $this->callback_url = config('services.vandar.callback_url');
-        $this->business = config('services.vandar.business');
+        $this->base_url = config('vandar.base_url');
+        $this->api_key = config('vandar.api_key');
+        $this->callback_url = config('vandar.callback_url');
+        $this->business = config('vandar.business');
     }
 
     public static function use(): Vandar
